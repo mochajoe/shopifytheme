@@ -286,49 +286,100 @@
     font-weight: 500;
     text-transform: capitalize;
     letter-spacing: 0.03em;
-    transition: color 0.2s;
-    padding: 0.5rem 0;
+    transition: all 0.2s ease;
+    padding: 0.8rem 0;
+    position: relative;
+  }
+
+  .header-nav__link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #FF6B35;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
   }
 
   .header-nav__link:hover {
     color: #FF6B35;
   }
 
-  /* Dropdown */
+  .header-nav__item:hover .header-nav__link::after,
+  .header-nav__item.has-dropdown:hover .header-nav__link::after {
+    transform: scaleX(1);
+  }
+
+  /* Dropdown - Formula S Style */
   .header-nav__dropdown {
     position: absolute;
     top: 100%;
-    left: -2rem;
+    left: 50%;
+    transform: translateX(-50%);
     background: #000000;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    min-width: 220px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    min-width: 200px;
     list-style: none;
-    margin: 1rem 0 0 0;
-    padding: 1rem 0;
+    margin: 1.5rem 0 0 0;
+    padding: 0.8rem 0;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.2s;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+    border-radius: 0;
+    z-index: 1000;
   }
 
   .header-nav__item:hover .header-nav__dropdown {
     opacity: 1;
     visibility: visible;
+    margin-top: 0.5rem;
+  }
+
+  .header-nav__dropdown li {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .header-nav__dropdown li:last-child {
+    border-bottom: none;
   }
 
   .header-nav__dropdown li a {
     display: block;
-    padding: 1rem 2rem;
+    padding: 1.2rem 2.5rem;
     color: #ffffff;
     text-decoration: none;
-    font-size: 1.4rem;
-    text-transform: none;
-    transition: all 0.2s;
+    font-size: 1.35rem;
+    font-weight: 400;
+    text-transform: capitalize;
+    transition: all 0.2s ease;
+    letter-spacing: 0.02em;
+    position: relative;
+    white-space: nowrap;
+  }
+
+  .header-nav__dropdown li a::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: #FF6B35;
+    transform: scaleY(0);
+    transition: transform 0.2s ease;
   }
 
   .header-nav__dropdown li a:hover {
-    background: rgba(255, 107, 53, 0.1);
+    background: rgba(255, 107, 53, 0.08);
     color: #FF6B35;
+    padding-left: 2.8rem;
+  }
+
+  .header-nav__dropdown li a:hover::before {
+    transform: scaleY(1);
   }
 
   /* Header Actions - Search, Account, Cart */
