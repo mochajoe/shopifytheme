@@ -1,0 +1,286 @@
+{% comment %}
+  Collection Template for Car Parts
+  Displays products with filtering and vehicle search
+{% endcomment %}
+
+<div class="collection-page">
+  <div class="collection-header page-width">
+    <h1 class="collection-header__title">{{ collection.title }}</h1>
+    {% if collection.description != blank %}
+      <div class="collection-header__description">
+        {{ collection.description }}
+      </div>
+    {% endif %}
+  </div>
+
+  {% comment %} Vehicle Search Section {% endcomment %}
+  {% if settings.enable_vehicle_search %}
+    <div class="page-width">
+      {% render 'vehicle-search' %}
+    </div>
+  {% endif %}
+
+  <div class="collection-layout page-width">
+    {% comment %} Filters Sidebar {% endcomment %}
+    <aside class="collection-sidebar">
+      {% section 'collection-filters' %}
+    </aside>
+
+    {% comment %} Products Grid {% endcomment %}
+    <div class="collection-content">
+      <div class="results-header">
+        <div class="results-count" data-results-count>
+          {{ collection.products_count }} {{ collection.products_count | pluralize: 'product', 'products' }}
+        </div>
+
+        <div class="collection-sort">
+          <label for="sort-by">Sort by:</label>
+          <select id="sort-by" class="collection-sort__select" onchange="sortProducts(this.value)">
+            <option value="manual">Featured</option>
+            <option value="best-selling">Best Selling</option>
+            <option value="title-ascending">A-Z</option>
+            <option value="title-descending">Z-A</option>
+            <option value="price-ascending">Price: Low to High</option>
+            <option value="price-descending">Price: High to Low</option>
+            <option value="created-ascending">Oldest</option>
+            <option value="created-descending">Newest</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="product-grid">
+        {% for product in collection.products %}
+          <article
+            class="product-card"
+            data-product-card
+            data-product-id="{{ product.id }}"
+            data-product-price="{{ product.price | divided_by: 100.0 }}"
+            {% if product.metafields.product_specs.brand %}
+              data-product-brand="{{ product.metafields.product_specs.brand }}"
+            {% endif %}
+            {% if product.metafields.product_info.installation_difficulty %}
+              data-install-difficulty="{{ product.metafields.product_info.installation_difficulty }}"
+            {% endif %}
+            data-compatibility='{"years": {{ product.metafields.vehicle.compatible_years.value | json }}, "makes": {{ product.metafields.vehicle.compatible_makes.value | json }}, "models": {{ product.metafields.vehicle.compatible_models.value | json }}}'
+          >
+            <a href="{{ product.url }}" class="product-card__link">
+              {% if product.featured_image %}
+                <img
+                  src="{{ product.featured_image | image_url: width: 400 }}"
+                  alt="{{ product.featured_image.alt | escape }}"
+                  class="product-card__image"
+                  loading="lazy"
+                >
+              {% else %}
+                <div class="product-card__image product-card__image--placeholder">
+                  No image
+                </div>
+              {% endif %}
+
+              <div class="product-card__info">
+                {% if product.metafields.product_specs.brand %}
+                  <div class="product-card__brand">{{ product.metafields.product_specs.brand }}</div>
+                {% endif %}
+
+                <h3 class="product-card__title">{{ product.title }}</h3>
+
+                {% if product.metafields.product_specs.part_number %}
+                  <div class="product-card__part-number">Part #: {{ product.metafields.product_specs.part_number }}</div>
+                {% endif %}
+
+                <div class="product-card__price" data-product-price="{{ product.price | divided_by: 100.0 }}">
+                  {{ product.price | money }}
+
+                  {% if product.compare_at_price > product.price %}
+                    <span class="product-card__compare-price">{{ product.compare_at_price | money }}</span>
+                  {% endif %}
+                </div>
+
+                {% if product.metafields.shipping.free_shipping_eligible == true %}
+                  <div class="product-card__badge product-card__badge--shipping">
+                    Free Shipping
+                  </div>
+                {% endif %}
+
+                {% if product.metafields.vehicle.universal_fit == true %}
+                  <div class="product-card__badge product-card__badge--universal">
+                    Universal Fit
+                  </div>
+                {% endif %}
+
+                {% unless product.available %}
+                  <div class="product-card__badge product-card__badge--sold-out">
+                    Sold Out
+                  </div>
+                {% endunless %}
+              </div>
+            </a>
+          </article>
+        {% else %}
+          <div class="collection-empty">
+            <h2>No products found</h2>
+            <p>Try adjusting your filters or search term.</p>
+          </div>
+        {% endfor %}
+      </div>
+
+      {% comment %} Pagination {% endcomment %}
+      {% if paginate.pages > 1 %}
+        <div class="pagination">
+          {% if paginate.previous %}
+            <a href="{{ paginate.previous.url }}" class="pagination__link pagination__link--prev">
+              Previous
+            </a>
+          {% endif %}
+
+          {% for part in paginate.parts %}
+            {% if part.is_link %}
+              <a href="{{ part.url }}" class="pagination__link">{{ part.title }}</a>
+            {% else %}
+              {% if part.title == paginate.current_page %}
+                <span class="pagination__link pagination__link--current">{{ part.title }}</span>
+              {% else %}
+                <span class="pagination__link">{{ part.title }}</span>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+
+          {% if paginate.next %}
+            <a href="{{ paginate.next.url }}" class="pagination__link pagination__link--next">
+              Next
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<script src="{{ 'collection-filters.js' | asset_url }}" defer="defer"></script>
+
+<script>
+  function sortProducts(sortValue) {
+    const url = new URL(window.location);
+    url.searchParams.set('sort_by', sortValue);
+    window.location.href = url.toString();
+  }
+</script>
+
+<style>
+  .product-card__link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .product-card__part-number {
+    font-size: 1.3rem;
+    color: #9ca3af;
+    margin-bottom: 0.5rem;
+  }
+
+  .product-card__badge {
+    display: inline-block;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+  }
+
+  .product-card__badge--shipping {
+    background: #d1fae5;
+    color: #065f46;
+  }
+
+  .product-card__badge--universal {
+    background: #dbeafe;
+    color: #1e40af;
+  }
+
+  .product-card__badge--sold-out {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+
+  .product-card__compare-price {
+    font-size: 1.4rem;
+    color: #9ca3af;
+    text-decoration: line-through;
+    margin-left: 0.5rem;
+  }
+
+  .product-card__image--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f3f4f6;
+    color: #9ca3af;
+  }
+
+  .collection-sort {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .collection-sort label {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .collection-sort__select {
+    padding: 0.8rem 1.2rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 4rem;
+  }
+
+  .pagination__link {
+    padding: 0.8rem 1.4rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    text-decoration: none;
+    color: var(--color-text);
+    transition: all 0.2s;
+  }
+
+  .pagination__link:hover {
+    background: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+  }
+
+  .pagination__link--current {
+    background: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+  }
+
+  .collection-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 6rem 2rem;
+  }
+
+  .collection-empty h2 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .collection-empty p {
+    font-size: 1.8rem;
+    color: #6b7280;
+  }
+</style>

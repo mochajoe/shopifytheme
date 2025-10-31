@@ -1,0 +1,153 @@
+{
+  "product": [
+    {
+      "namespace": "vehicle",
+      "key": "compatible_years",
+      "name": "Compatible Years",
+      "description": "Years this part is compatible with (e.g., 2020,2021,2022)",
+      "type": "list.single_line_text_field",
+      "validations": []
+    },
+    {
+      "namespace": "vehicle",
+      "key": "compatible_makes",
+      "name": "Compatible Makes",
+      "description": "Vehicle makes this part fits (e.g., Ford,Chevrolet,Toyota)",
+      "type": "list.single_line_text_field",
+      "validations": []
+    },
+    {
+      "namespace": "vehicle",
+      "key": "compatible_models",
+      "name": "Compatible Models",
+      "description": "Vehicle models this part fits (e.g., F-150,Silverado,Camry)",
+      "type": "list.single_line_text_field",
+      "validations": []
+    },
+    {
+      "namespace": "vehicle",
+      "key": "compatible_engines",
+      "name": "Compatible Engines",
+      "description": "Engine types this part fits (e.g., 5.0L V8,3.5L V6)",
+      "type": "list.single_line_text_field",
+      "validations": []
+    },
+    {
+      "namespace": "vehicle",
+      "key": "universal_fit",
+      "name": "Universal Fit",
+      "description": "Whether this part fits all vehicles",
+      "type": "boolean",
+      "validations": []
+    },
+    {
+      "namespace": "product_specs",
+      "key": "part_number",
+      "name": "Part Number",
+      "description": "Manufacturer part number",
+      "type": "single_line_text_field",
+      "validations": []
+    },
+    {
+      "namespace": "product_specs",
+      "key": "oem_number",
+      "name": "OEM Number",
+      "description": "Original Equipment Manufacturer number",
+      "type": "single_line_text_field",
+      "validations": []
+    },
+    {
+      "namespace": "product_specs",
+      "key": "brand",
+      "name": "Brand",
+      "description": "Part brand/manufacturer",
+      "type": "single_line_text_field",
+      "validations": []
+    },
+    {
+      "namespace": "product_specs",
+      "key": "warranty",
+      "name": "Warranty",
+      "description": "Warranty information",
+      "type": "multi_line_text_field",
+      "validations": []
+    },
+    {
+      "namespace": "product_specs",
+      "key": "material",
+      "name": "Material",
+      "description": "Material the part is made from",
+      "type": "single_line_text_field",
+      "validations": []
+    },
+    {
+      "namespace": "product_specs",
+      "key": "weight",
+      "name": "Weight",
+      "description": "Product weight with unit (e.g., 5 lbs)",
+      "type": "single_line_text_field",
+      "validations": []
+    },
+    {
+      "namespace": "product_specs",
+      "key": "dimensions",
+      "name": "Dimensions",
+      "description": "Product dimensions (e.g., 10x5x3 inches)",
+      "type": "single_line_text_field",
+      "validations": []
+    },
+    {
+      "namespace": "product_info",
+      "key": "installation_difficulty",
+      "name": "Installation Difficulty",
+      "description": "How difficult is installation (Easy, Moderate, Professional)",
+      "type": "single_line_text_field",
+      "validations": [
+        {
+          "name": "choices",
+          "value": "[\"Easy\", \"Moderate\", \"Professional\"]"
+        }
+      ]
+    },
+    {
+      "namespace": "product_info",
+      "key": "installation_time",
+      "name": "Installation Time",
+      "description": "Estimated installation time (e.g., 30 minutes, 2 hours)",
+      "type": "single_line_text_field",
+      "validations": []
+    },
+    {
+      "namespace": "product_info",
+      "key": "tools_required",
+      "name": "Tools Required",
+      "description": "Tools needed for installation",
+      "type": "multi_line_text_field",
+      "validations": []
+    },
+    {
+      "namespace": "shipping",
+      "key": "ships_from",
+      "name": "Ships From",
+      "description": "Warehouse location",
+      "type": "single_line_text_field",
+      "validations": []
+    },
+    {
+      "namespace": "shipping",
+      "key": "shipping_time",
+      "name": "Shipping Time",
+      "description": "Estimated shipping time (e.g., 2-3 business days)",
+      "type": "single_line_text_field",
+      "validations": []
+    },
+    {
+      "namespace": "shipping",
+      "key": "free_shipping_eligible",
+      "name": "Free Shipping Eligible",
+      "description": "Whether this product qualifies for free shipping",
+      "type": "boolean",
+      "validations": []
+    }
+  ]
+}

@@ -1,0 +1,233 @@
+{% comment %}
+  Advanced Product Filters Section
+  For car parts collections
+{% endcomment %}
+
+<div class="collection-filters" data-collection-filters>
+  <div class="filters-header">
+    <h3 class="filters-title">Filter Results</h3>
+    <button class="filters-clear" data-clear-filters style="display: none;">
+      Clear All Filters
+    </button>
+  </div>
+
+  <div class="filters-container">
+    {% comment %} Price Range Filter {% endcomment %}
+    <div class="filter-group">
+      <button class="filter-group__header" data-filter-toggle>
+        <span>Price Range</span>
+        <svg class="filter-group__icon" width="12" height="8" viewBox="0 0 12 8">
+          <path d="M1.41 0L6 4.59 10.59 0 12 1.41l-6 6-6-6z" fill="currentColor"/>
+        </svg>
+      </button>
+      <div class="filter-group__content">
+        <div class="price-range">
+          <input
+            type="number"
+            class="price-range__input"
+            placeholder="$ Min"
+            data-price-min
+            min="0"
+          >
+          <span class="price-range__separator">-</span>
+          <input
+            type="number"
+            class="price-range__input"
+            placeholder="$ Max"
+            data-price-max
+            min="0"
+          >
+        </div>
+        <button class="button button--small" data-apply-price>Apply</button>
+      </div>
+    </div>
+
+    {% comment %} Brand Filter {% endcomment %}
+    <div class="filter-group">
+      <button class="filter-group__header" data-filter-toggle>
+        <span>Brand</span>
+        <svg class="filter-group__icon" width="12" height="8" viewBox="0 0 12 8">
+          <path d="M1.41 0L6 4.59 10.59 0 12 1.41l-6 6-6-6z" fill="currentColor"/>
+        </svg>
+      </button>
+      <div class="filter-group__content">
+        <div class="filter-options" data-filter-brand>
+          <label class="filter-option">
+            <input type="checkbox" value="OEM" data-filter-checkbox>
+            <span>OEM</span>
+          </label>
+          <label class="filter-option">
+            <input type="checkbox" value="Aftermarket" data-filter-checkbox>
+            <span>Aftermarket</span>
+          </label>
+          <label class="filter-option">
+            <input type="checkbox" value="Performance" data-filter-checkbox>
+            <span>Performance</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    {% comment %} Part Category Filter {% endcomment %}
+    <div class="filter-group">
+      <button class="filter-group__header" data-filter-toggle>
+        <span>Category</span>
+        <svg class="filter-group__icon" width="12" height="8" viewBox="0 0 12 8">
+          <path d="M1.41 0L6 4.59 10.59 0 12 1.41l-6 6-6-6z" fill="currentColor"/>
+        </svg>
+      </button>
+      <div class="filter-group__content">
+        <div class="filter-options" data-filter-category>
+          <label class="filter-option">
+            <input type="checkbox" value="engine" data-filter-checkbox>
+            <span>Engine Parts</span>
+          </label>
+          <label class="filter-option">
+            <input type="checkbox" value="brakes" data-filter-checkbox>
+            <span>Brakes</span>
+          </label>
+          <label class="filter-option">
+            <input type="checkbox" value="suspension" data-filter-checkbox>
+            <span>Suspension</span>
+          </label>
+          <label class="filter-option">
+            <input type="checkbox" value="exhaust" data-filter-checkbox>
+            <span>Exhaust</span>
+          </label>
+          <label class="filter-option">
+            <input type="checkbox" value="electrical" data-filter-checkbox>
+            <span>Electrical</span>
+          </label>
+          <label class="filter-option">
+            <input type="checkbox" value="body" data-filter-checkbox>
+            <span>Body Parts</span>
+          </label>
+          <label class="filter-option">
+            <input type="checkbox" value="interior" data-filter-checkbox>
+            <span>Interior</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    {% comment %} Installation Difficulty Filter {% endcomment %}
+    <div class="filter-group">
+      <button class="filter-group__header" data-filter-toggle>
+        <span>Installation</span>
+        <svg class="filter-group__icon" width="12" height="8" viewBox="0 0 12 8">
+          <path d="M1.41 0L6 4.59 10.59 0 12 1.41l-6 6-6-6z" fill="currentColor"/>
+        </svg>
+      </button>
+      <div class="filter-group__content">
+        <div class="filter-options" data-filter-installation>
+          <label class="filter-option">
+            <input type="checkbox" value="Easy" data-filter-checkbox>
+            <span>Easy</span>
+          </label>
+          <label class="filter-option">
+            <input type="checkbox" value="Moderate" data-filter-checkbox>
+            <span>Moderate</span>
+          </label>
+          <label class="filter-option">
+            <input type="checkbox" value="Professional" data-filter-checkbox>
+            <span>Professional</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    {% comment %} Availability Filter {% endcomment %}
+    <div class="filter-group">
+      <button class="filter-group__header" data-filter-toggle>
+        <span>Availability</span>
+        <svg class="filter-group__icon" width="12" height="8" viewBox="0 0 12 8">
+          <path d="M1.41 0L6 4.59 10.59 0 12 1.41l-6 6-6-6z" fill="currentColor"/>
+        </svg>
+      </button>
+      <div class="filter-group__content">
+        <div class="filter-options">
+          <label class="filter-option">
+            <input type="checkbox" value="in-stock" data-filter-checkbox>
+            <span>In Stock</span>
+          </label>
+          <label class="filter-option">
+            <input type="checkbox" value="free-shipping" data-filter-checkbox>
+            <span>Free Shipping</span>
+          </label>
+          <label class="filter-option">
+            <input type="checkbox" value="on-sale" data-filter-checkbox>
+            <span>On Sale</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    {% comment %} Vehicle Compatibility Quick Filter {% endcomment %}
+    {% if settings.enable_vehicle_search %}
+      <div class="filter-group filter-group--highlighted">
+        <button class="filter-group__header" data-filter-toggle>
+          <span>My Vehicle</span>
+          <svg class="filter-group__icon" width="12" height="8" viewBox="0 0 12 8">
+            <path d="M1.41 0L6 4.59 10.59 0 12 1.41l-6 6-6-6z" fill="currentColor"/>
+          </svg>
+        </button>
+        <div class="filter-group__content">
+          <div class="vehicle-filter" data-vehicle-filter>
+            <p class="vehicle-filter__text" id="saved-vehicle-filter">
+              No vehicle selected
+            </p>
+            <button class="button button--small button--full" onclick="scrollToVehicleSearch()">
+              Select Vehicle
+            </button>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="active-filters" data-active-filters style="display: none;">
+    <h4 class="active-filters__title">Active Filters:</h4>
+    <div class="active-filters__list" data-active-filters-list></div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection Filters",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_price_filter",
+      "label": "Show Price Filter",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_brand_filter",
+      "label": "Show Brand Filter",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_category_filter",
+      "label": "Show Category Filter",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Filters"
+    }
+  ]
+}
+{% endschema %}
+
+<script>
+  // Scroll to vehicle search section
+  function scrollToVehicleSearch() {
+    const vehicleSearch = document.querySelector('[data-vehicle-search]');
+    if (vehicleSearch) {
+      vehicleSearch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+</script>

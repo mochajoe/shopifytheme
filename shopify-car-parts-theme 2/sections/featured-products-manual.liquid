@@ -1,0 +1,420 @@
+{% comment %}
+  Featured Products Section - Manual Product Selection
+  Perfect for showcasing handpicked products from your catalog
+{% endcomment %}
+
+<section class="featured-products-manual" data-section-id="{{ section.id }}">
+  <div class="page-width">
+    {% if section.settings.heading != blank %}
+      <div class="section-header">
+        <h2 class="section-title">{{ section.settings.heading }}</h2>
+        {% if section.settings.subheading != blank %}
+          <p class="section-subtitle">{{ section.settings.subheading }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="product-grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'product' and block.settings.product != blank %}
+          {% assign product = block.settings.product %}
+          <article class="product-card" {{ block.shopify_attributes }}>
+            <a href="{{ product.url }}" class="product-card__link">
+              {% if product.featured_image %}
+                <div class="product-card__image-wrapper">
+                  <img
+                    src="{{ product.featured_image | image_url: width: 400 }}"
+                    srcset="{{ product.featured_image | image_url: width: 200 }} 200w,
+                            {{ product.featured_image | image_url: width: 400 }} 400w,
+                            {{ product.featured_image | image_url: width: 600 }} 600w"
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                    alt="{{ product.featured_image.alt | escape }}"
+                    class="product-card__image"
+                    loading="lazy"
+                  >
+                </div>
+              {% else %}
+                <div class="product-card__image-wrapper">
+                  <div class="product-card__image product-card__image--placeholder">
+                    No Image
+                  </div>
+                </div>
+              {% endif %}
+
+              <div class="product-card__info">
+                {% if product.vendor %}
+                  <div class="product-card__brand">{{ product.vendor }}</div>
+                {% endif %}
+
+                <h3 class="product-card__title">{{ product.title }}</h3>
+
+                <div class="product-card__price">
+                  {{ product.price | money }}
+                  {% if product.compare_at_price > product.price %}
+                    <span class="price-save">SALE</span>
+                  {% endif %}
+                </div>
+
+                {% if product.available == false %}
+                  <div class="product-card__badge product-card__badge--sold-out">
+                    Sold Out
+                  </div>
+                {% endif %}
+              </div>
+            </a>
+          </article>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    {% if section.settings.show_view_all %}
+      <div class="section-cta">
+        <a href="{{ section.settings.button_url }}" class="button button--secondary">
+          {{ section.settings.button_text }}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured Products",
+  "tag": "section",
+  "class": "section-featured-products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Featured Products"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Hand-picked performance parts"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show 'View All' Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "View All Products"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL",
+      "default": "/collections/all"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 8,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 8,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Products",
+      "blocks": [
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 12
+}
+{% endschema %}
+
+<style>
+  .featured-products-manual {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background: #0a0a0a;
+    position: relative;
+  }
+
+  .featured-products-manual::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent);
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 5rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .section-title {
+    font-size: 4rem;
+    font-weight: 700;
+    margin: 0 0 1.5rem 0;
+    color: #e8e8e8;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    position: relative;
+    display: inline-block;
+  }
+
+  .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--color-primary, #D4AF37), transparent);
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+  }
+
+  .section-subtitle {
+    font-size: 1.8rem;
+    color: #999;
+    margin: 2rem 0 0;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+  }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 3rem;
+    margin-bottom: 5rem;
+  }
+
+  .product-card {
+    position: relative;
+  }
+
+  .product-card__link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+    background: linear-gradient(180deg, #1a1a1a, #151515);
+    border: 1px solid #2a2a2a;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+  }
+
+  .product-card__link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--color-primary, #D4AF37), transparent);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .product-card__link:hover::before {
+    opacity: 1;
+  }
+
+  .product-card__link:hover {
+    border-color: var(--color-primary, #D4AF37);
+    box-shadow: 0 0 40px rgba(212, 175, 55, 0.25), 0 20px 40px rgba(0, 0, 0, 0.4);
+    transform: translateY(-8px);
+  }
+
+  .product-card__image-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: #0a0a0a;
+  }
+
+  .product-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .product-card__link:hover .product-card__image {
+    transform: scale(1.08);
+  }
+
+  .product-card__image--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+    color: #444;
+    font-size: 1.4rem;
+  }
+
+  .product-card__info {
+    padding: 2rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .product-card__brand {
+    font-size: 1.2rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+  }
+
+  .product-card__title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #e8e8e8;
+    margin: 0 0 1.2rem 0;
+    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .product-card__price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-primary, #D4AF37);
+    margin-top: auto;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+  }
+
+  .price-save {
+    background: var(--color-accent, #ff3366);
+    color: white;
+    padding: 0.4rem 0.8rem;
+    font-size: 1.2rem;
+    margin-left: 0.8rem;
+    box-shadow: 0 0 10px rgba(255, 51, 102, 0.4);
+    font-weight: 700;
+  }
+
+  .product-card__badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-top: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .product-card__badge--sold-out {
+    background: rgba(255, 51, 102, 0.1);
+    color: var(--color-accent, #ff3366);
+    border: 1px solid var(--color-accent, #ff3366);
+  }
+
+  .section-cta {
+    text-align: center;
+    margin-top: 5rem;
+  }
+
+  @media (max-width: 1024px) {
+    .product-grid {
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 2.5rem;
+    }
+
+    .section-title {
+      font-size: 3.2rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .featured-products-manual {
+      padding-top: 60px;
+      padding-bottom: 60px;
+    }
+
+    .section-header {
+      margin-bottom: 3.5rem;
+    }
+
+    .product-grid {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 2rem;
+    }
+
+    .section-title {
+      font-size: 2.6rem;
+    }
+
+    .section-subtitle {
+      font-size: 1.5rem;
+    }
+
+    .product-card__info {
+      padding: 1.5rem;
+    }
+  }
+</style>

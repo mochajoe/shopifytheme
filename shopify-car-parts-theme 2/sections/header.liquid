@@ -1,0 +1,470 @@
+{% comment %}
+  Header Section - Clean minimalist style
+{% endcomment %}
+
+<header class="site-header" data-section-id="{{ section.id }}">
+  {% comment %} Top Bar with Contact Info {% endcomment %}
+  {% if section.settings.show_announcement %}
+    <div class="header-announcement">
+      <div class="page-width">
+        <div class="announcement-bar">
+          {% if section.settings.phone_number != blank %}
+            <a href="tel:{{ section.settings.phone_number }}" class="announcement-phone">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+              </svg>
+              {{ section.settings.phone_number }}
+            </a>
+          {% endif %}
+
+          <div class="announcement-message">
+            {{ section.settings.announcement_text }}
+          </div>
+
+          <div class="announcement-links">
+            {% if customer %}
+              <a href="/account">Account</a>
+            {% else %}
+              <a href="/account/login">Login</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  {% comment %} Main Header {% endcomment %}
+  <div class="header-main">
+    <div class="page-width">
+      <div class="header-layout">
+        {% comment %} Logo {% endcomment %}
+        <div class="header-logo">
+          {% if section.settings.logo %}
+            <a href="/" class="header-logo__link">
+              <img
+                src="{{ section.settings.logo | image_url: width: 250 }}"
+                alt="{{ shop.name }}"
+                class="header-logo__image"
+              >
+            </a>
+          {% else %}
+            <a href="/" class="header-logo__link header-logo__text">
+              {{ shop.name }}
+            </a>
+          {% endif %}
+        </div>
+
+        {% comment %} Search Bar {% endcomment %}
+        <div class="header-search">
+          <form action="/search" method="get" class="search-form">
+            <input
+              type="search"
+              name="q"
+              placeholder="Search for parts, brands, part numbers..."
+              class="search-input"
+              autocomplete="off"
+            >
+            <button type="submit" class="search-button">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
+              </svg>
+            </button>
+          </form>
+        </div>
+
+        {% comment %} Cart {% endcomment %}
+        <div class="header-actions">
+          <a href="/cart" class="header-cart" aria-label="Cart">
+            <svg width="24" height="24" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/>
+            </svg>
+            <span class="header-cart__count" id="cart-count">{{ cart.item_count }}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% comment %} Navigation {% endcomment %}
+  <nav class="header-nav">
+    <div class="page-width">
+      <ul class="header-nav__list">
+        {% for link in section.settings.menu.links %}
+          <li class="header-nav__item {% if link.links != blank %}has-dropdown{% endif %}">
+            <a href="{{ link.url }}" class="header-nav__link">
+              {{ link.title }}
+              {% if link.links != blank %}
+                <svg width="12" height="8" viewBox="0 0 12 8" class="dropdown-icon">
+                  <path d="M1.41 0L6 4.59 10.59 0 12 1.41l-6 6-6-6z" fill="currentColor"/>
+                </svg>
+              {% endif %}
+            </a>
+
+            {% if link.links != blank %}
+              <ul class="header-nav__dropdown">
+                {% for childlink in link.links %}
+                  <li>
+                    <a href="{{ childlink.url }}">{{ childlink.title }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </nav>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo Image",
+      "info": "Upload your 3 Cat Garage logo. Recommended size: 280x70px or similar aspect ratio. PNG with transparent background works best."
+    },
+    {
+      "type": "range",
+      "id": "logo_max_height",
+      "min": 40,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Logo Height",
+      "default": 70,
+      "info": "Adjust the maximum height of your logo"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "label": "Show Announcement Bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "phone_number",
+      "label": "Phone Number",
+      "default": "(323) 123-4567"
+    },
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "Announcement Text",
+      "default": "Free shipping on orders over $50"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  /* Announcement Bar - Dark */
+  .header-announcement {
+    background: #000000;
+    color: #e8e8e8;
+    font-size: 1.3rem;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #2a2a2a;
+  }
+
+  .announcement-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .announcement-phone {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: white;
+    text-decoration: none;
+  }
+
+  .announcement-phone:hover {
+    opacity: 0.8;
+  }
+
+  .announcement-message {
+    flex: 1;
+    text-align: center;
+  }
+
+  .announcement-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .announcement-links a {
+    color: white;
+    text-decoration: none;
+  }
+
+  .announcement-links a:hover {
+    opacity: 0.8;
+  }
+
+  /* Main Header - Dark */
+  .site-header {
+    background: #0a0a0a;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(212, 175, 55, 0.1);
+  }
+
+  .header-main {
+    padding: 2rem 0;
+    border-bottom: 1px solid #2a2a2a;
+  }
+
+  .header-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr auto;
+    align-items: center;
+    gap: 3rem;
+  }
+
+  .header-logo {
+    display: flex;
+    align-items: center;
+  }
+
+  .header-logo__link {
+    text-decoration: none;
+    color: var(--color-primary, #D4AF37);
+    font-size: 2.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+    display: block;
+    transition: all 0.3s ease;
+  }
+
+  .header-logo__link:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.6));
+  }
+
+  .header-logo__image {
+    max-height: {{ section.settings.logo_max_height }}px;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+  }
+
+  /* Search Bar */
+  .header-search {
+    max-width: 600px;
+    width: 100%;
+  }
+
+  .search-form {
+    position: relative;
+    display: flex;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 1.2rem 5rem 1.2rem 1.5rem;
+    border: 1px solid #2a2a2a;
+    background: #1a1a1a;
+    color: #e8e8e8;
+    border-radius: 4px;
+    font-size: 1.4rem;
+    font-family: inherit;
+  }
+
+  .search-input::placeholder {
+    color: #666;
+  }
+
+  .search-input:focus {
+    outline: none;
+    border-color: var(--color-primary, #D4AF37);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+  }
+
+  .search-button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    padding: 0 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-primary, #D4AF37);
+  }
+
+  .search-button:hover {
+    opacity: 0.7;
+  }
+
+  /* Cart - Dark */
+  .header-cart {
+    position: relative;
+    color: #e8e8e8;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s;
+  }
+
+  .header-cart:hover {
+    color: var(--color-primary, #D4AF37);
+  }
+
+  .header-cart__count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: var(--color-primary, #D4AF37);
+    color: #0a0a0a;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+  }
+
+  /* Navigation - Dark */
+  .header-nav {
+    background: #1a1a1a;
+    border-top: 1px solid #2a2a2a;
+  }
+
+  .header-nav__list {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 3rem;
+  }
+
+  .header-nav__item {
+    position: relative;
+  }
+
+  .header-nav__link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1.5rem 0;
+    text-decoration: none;
+    color: #e8e8e8;
+    font-size: 1.4rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all 0.3s;
+  }
+
+  .header-nav__link:hover {
+    color: var(--color-primary, #D4AF37);
+  }
+
+  .dropdown-icon {
+    width: 10px;
+    height: 10px;
+  }
+
+  /* Dropdown - Dark */
+  .header-nav__dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    min-width: 200px;
+    list-style: none;
+    margin: 0;
+    padding: 1rem 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s;
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.15);
+  }
+
+  .header-nav__item:hover .header-nav__dropdown {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .header-nav__dropdown li a {
+    display: block;
+    padding: 1rem 2rem;
+    color: #e8e8e8;
+    text-decoration: none;
+    font-size: 1.4rem;
+    text-transform: none;
+    transition: all 0.3s;
+  }
+
+  .header-nav__dropdown li a:hover {
+    background: #2a2a2a;
+    color: var(--color-primary, #D4AF37);
+  }
+
+  /* Mobile */
+  @media (max-width: 968px) {
+    .header-layout {
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+    }
+
+    .header-logo__image {
+      max-height: 50px;
+    }
+
+    .header-logo__link {
+      font-size: 1.8rem;
+    }
+
+    .header-search {
+      grid-column: 1 / -1;
+      max-width: 100%;
+    }
+
+    .announcement-bar {
+      flex-direction: column;
+      text-align: center;
+      gap: 0.5rem;
+    }
+
+    .header-nav__list {
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      font-size: 1.2rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .header-main {
+      padding: 1.5rem 0;
+    }
+
+    .header-logo__image {
+      max-height: 40px;
+    }
+
+    .header-logo__link {
+      font-size: 1.6rem;
+    }
+  }
+</style>

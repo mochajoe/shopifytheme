@@ -1,0 +1,28 @@
+{% comment %}
+  Homepage Template - Elegant Design
+{% endcomment %}
+
+<div class="homepage">
+  {% comment %} Hero Banner {% endcomment %}
+  {% section 'hero-banner' %}
+
+  {% comment %} Shop by Vehicle - Primary Section {% endcomment %}
+  {% section 'vehicle-collections' %}
+
+  {% comment %} Featured Products - Manual Selection {% endcomment %}
+  {% section 'featured-products-manual' %}
+
+  {% comment %} Brand Showcase {% endcomment %}
+  {% section 'brand-showcase' %}
+
+  {% comment %} Vehicle Search (Optional - Can be toggled in theme settings) {% endcomment %}
+  {% if settings.enable_vehicle_search %}
+    {% section 'vehicle-search-hero' %}
+  {% endif %}
+</div>
+
+<style>
+  .homepage {
+    background: #0a0a0a;
+  }
+</style>

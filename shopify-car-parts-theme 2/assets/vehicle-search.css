@@ -1,0 +1,242 @@
+/* Vehicle Search Styles */
+
+.vehicle-search {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 4rem 2rem;
+  margin: 2rem 0;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.vehicle-search__container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.vehicle-search__heading {
+  color: white;
+  font-size: 3.2rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  text-align: center;
+  font-family: var(--font-heading-family);
+}
+
+.vehicle-search__subheading {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.6rem;
+  margin: 0 0 3rem 0;
+  text-align: center;
+}
+
+.vehicle-search__form {
+  background: white;
+  padding: 3rem;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.vehicle-search__selectors {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .vehicle-search__selectors {
+    grid-template-columns: 1fr;
+  }
+}
+
+.vehicle-search__field {
+  display: flex;
+  flex-direction: column;
+}
+
+.vehicle-search__field--optional {
+  opacity: 0.8;
+}
+
+.vehicle-search__label {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+  color: var(--color-text);
+  display: block;
+}
+
+.vehicle-search__select {
+  padding: 1.2rem 1.5rem;
+  font-size: 1.6rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 6px;
+  background-color: white;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-body-family);
+}
+
+.vehicle-search__select:hover:not(:disabled) {
+  border-color: var(--color-primary);
+}
+
+.vehicle-search__select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+}
+
+.vehicle-search__select:disabled {
+  background-color: #f7fafc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.vehicle-search__actions {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+  .vehicle-search__actions {
+    flex-direction: column;
+  }
+}
+
+.vehicle-search__button,
+.vehicle-search__reset {
+  padding: 1.4rem 3rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-body-family);
+}
+
+.button--primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.button--primary:hover:not(:disabled) {
+  background-color: #1557b0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.button--primary:disabled {
+  background-color: #cbd5e0;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.button--secondary {
+  background-color: transparent;
+  color: var(--color-text);
+  border: 2px solid #e2e8f0;
+}
+
+.button--secondary:hover {
+  background-color: #f7fafc;
+  border-color: #cbd5e0;
+}
+
+.vehicle-search__saved {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #f0fdf4;
+  border: 2px solid #86efac;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.vehicle-search__saved-text {
+  margin: 0;
+  font-size: 1.6rem;
+  color: #166534;
+}
+
+.vehicle-search__saved-text strong {
+  font-weight: 700;
+  color: #15803d;
+}
+
+.vehicle-search__change-link {
+  background: none;
+  border: none;
+  color: #1a73e8;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 1.6rem;
+  margin-left: 1rem;
+  padding: 0;
+}
+
+.vehicle-search__change-link:hover {
+  color: #1557b0;
+}
+
+.vehicle-search__loading,
+.vehicle-search__error {
+  text-align: center;
+  padding: 2rem;
+  margin-top: 2rem;
+}
+
+.spinner {
+  border: 4px solid #f3f4f6;
+  border-top: 4px solid var(--color-primary);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-message {
+  color: #dc2626;
+  font-size: 1.6rem;
+  margin: 0;
+}
+
+/* Compatibility Badge */
+.compatibility-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #10b981;
+  color: white;
+  border-radius: 4px;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.product-card.compatible {
+  border: 2px solid #10b981;
+  position: relative;
+}
+
+.product-card.compatible::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 40px 40px 0;
+  border-color: transparent #10b981 transparent transparent;
+}

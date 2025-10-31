@@ -1,0 +1,241 @@
+{% comment %}
+  Product Template for Car Parts
+  Displays product info with vehicle compatibility and specifications
+{% endcomment %}
+
+<div class="product-page" data-product-id="{{ product.id }}">
+  <div class="product-container">
+    <div class="product-gallery">
+      {% if product.images.size > 0 %}
+        <div class="product-gallery__main">
+          <img
+            src="{{ product.featured_image | image_url: width: 800 }}"
+            alt="{{ product.featured_image.alt | escape }}"
+            class="product-gallery__image"
+            id="main-product-image"
+          >
+        </div>
+
+        {% if product.images.size > 1 %}
+          <div class="product-gallery__thumbnails">
+            {% for image in product.images limit: 5 %}
+              <button
+                class="product-gallery__thumbnail {% if forloop.first %}active{% endif %}"
+                data-image-url="{{ image | image_url: width: 800 }}"
+                onclick="changeMainImage(this)"
+              >
+                <img src="{{ image | image_url: width: 100 }}" alt="{{ image.alt | escape }}">
+              </button>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
+
+    <div class="product-info">
+      <h1 class="product-info__title">{{ product.title }}</h1>
+
+      {% if product.metafields.product_specs.part_number %}
+        <p class="product-info__part-number">
+          Part #: <strong>{{ product.metafields.product_specs.part_number }}</strong>
+        </p>
+      {% endif %}
+
+      <div class="product-info__price">
+        <span class="price">{{ product.price | money }}</span>
+        {% if product.compare_at_price > product.price %}
+          <span class="price-compare">{{ product.compare_at_price | money }}</span>
+          <span class="price-save">
+            Save {{ product.compare_at_price | minus: product.price | money }}
+          </span>
+        {% endif %}
+      </div>
+
+      {% comment %} Vehicle Compatibility Badge {% endcomment %}
+      {% if product.metafields.vehicle.universal_fit == true %}
+        <div class="compatibility-info compatibility-info--universal">
+          <svg class="icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
+          </svg>
+          <span>Universal Fit - Fits Most Vehicles</span>
+        </div>
+      {% elsif product.metafields.vehicle.compatible_years %}
+        <div class="compatibility-info">
+          <h3 class="compatibility-info__title">Vehicle Compatibility</h3>
+          <div class="compatibility-info__details">
+            {% if product.metafields.vehicle.compatible_years %}
+              <p><strong>Years:</strong> {{ product.metafields.vehicle.compatible_years.value | join: ', ' }}</p>
+            {% endif %}
+            {% if product.metafields.vehicle.compatible_makes %}
+              <p><strong>Makes:</strong> {{ product.metafields.vehicle.compatible_makes.value | join: ', ' }}</p>
+            {% endif %}
+            {% if product.metafields.vehicle.compatible_models %}
+              <p><strong>Models:</strong> {{ product.metafields.vehicle.compatible_models.value | join: ', ' }}</p>
+            {% endif %}
+            {% if product.metafields.vehicle.compatible_engines %}
+              <p><strong>Engines:</strong> {{ product.metafields.vehicle.compatible_engines.value | join: ', ' }}</p>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+
+      {% comment %} Product Form {% endcomment %}
+      <form method="post" action="/cart/add" class="product-form">
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+        {% unless product.has_only_default_variant %}
+          <div class="product-form__variants">
+            {% for option in product.options_with_values %}
+              <div class="product-form__option">
+                <label for="option-{{ forloop.index }}">{{ option.name }}</label>
+                <select
+                  id="option-{{ forloop.index }}"
+                  name="options[{{ option.name }}]"
+                  class="product-form__select"
+                >
+                  {% for value in option.values %}
+                    <option value="{{ value }}">{{ value }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            {% endfor %}
+          </div>
+        {% endunless %}
+
+        <div class="product-form__quantity">
+          <label for="quantity">Quantity</label>
+          <input
+            type="number"
+            id="quantity"
+            name="quantity"
+            value="1"
+            min="1"
+            class="product-form__quantity-input"
+          >
+        </div>
+
+        <button
+          type="submit"
+          class="product-form__submit button button--primary"
+          {% unless product.available %}disabled{% endunless %}
+        >
+          {% if product.available %}
+            Add to Cart
+          {% else %}
+            Sold Out
+          {% endif %}
+        </button>
+
+        {% if product.metafields.shipping.free_shipping_eligible == true %}
+          <p class="shipping-message">
+            <svg class="icon" width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/>
+              <path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1v-5a1 1 0 00-.293-.707l-2-2A1 1 0 0015 7h-1z"/>
+            </svg>
+            Free Shipping on This Item
+          </p>
+        {% endif %}
+      </form>
+
+      {% comment %} Product Description {% endcomment %}
+      {% if product.description != blank %}
+        <div class="product-description">
+          <h2>Description</h2>
+          {{ product.description }}
+        </div>
+      {% endif %}
+
+      {% comment %} Product Specifications {% endcomment %}
+      <div class="product-specifications">
+        <h2>Specifications</h2>
+        <table class="specs-table">
+          {% if product.metafields.product_specs.brand %}
+            <tr>
+              <th>Brand</th>
+              <td>{{ product.metafields.product_specs.brand }}</td>
+            </tr>
+          {% endif %}
+          {% if product.metafields.product_specs.part_number %}
+            <tr>
+              <th>Part Number</th>
+              <td>{{ product.metafields.product_specs.part_number }}</td>
+            </tr>
+          {% endif %}
+          {% if product.metafields.product_specs.oem_number %}
+            <tr>
+              <th>OEM Number</th>
+              <td>{{ product.metafields.product_specs.oem_number }}</td>
+            </tr>
+          {% endif %}
+          {% if product.metafields.product_specs.material %}
+            <tr>
+              <th>Material</th>
+              <td>{{ product.metafields.product_specs.material }}</td>
+            </tr>
+          {% endif %}
+          {% if product.metafields.product_specs.weight %}
+            <tr>
+              <th>Weight</th>
+              <td>{{ product.metafields.product_specs.weight }}</td>
+            </tr>
+          {% endif %}
+          {% if product.metafields.product_specs.dimensions %}
+            <tr>
+              <th>Dimensions</th>
+              <td>{{ product.metafields.product_specs.dimensions }}</td>
+            </tr>
+          {% endif %}
+          {% if product.metafields.product_specs.warranty %}
+            <tr>
+              <th>Warranty</th>
+              <td>{{ product.metafields.product_specs.warranty }}</td>
+            </tr>
+          {% endif %}
+        </table>
+      </div>
+
+      {% comment %} Installation Info {% endcomment %}
+      {% if product.metafields.product_info.installation_difficulty %}
+        <div class="installation-info">
+          <h2>Installation Information</h2>
+          <div class="installation-info__grid">
+            {% if product.metafields.product_info.installation_difficulty %}
+              <div class="installation-info__item">
+                <strong>Difficulty:</strong>
+                <span class="badge badge--{{ product.metafields.product_info.installation_difficulty | downcase }}">
+                  {{ product.metafields.product_info.installation_difficulty }}
+                </span>
+              </div>
+            {% endif %}
+            {% if product.metafields.product_info.installation_time %}
+              <div class="installation-info__item">
+                <strong>Estimated Time:</strong>
+                {{ product.metafields.product_info.installation_time }}
+              </div>
+            {% endif %}
+          </div>
+          {% if product.metafields.product_info.tools_required %}
+            <div class="installation-info__tools">
+              <strong>Tools Required:</strong>
+              <p>{{ product.metafields.product_info.tools_required }}</p>
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<script>
+  function changeMainImage(button) {
+    const imageUrl = button.dataset.imageUrl;
+    const mainImage = document.getElementById('main-product-image');
+    mainImage.src = imageUrl;
+
+    // Update active thumbnail
+    document.querySelectorAll('.product-gallery__thumbnail').forEach(thumb => {
+      thumb.classList.remove('active');
+    });
+    button.classList.add('active');
+  }
+</script>

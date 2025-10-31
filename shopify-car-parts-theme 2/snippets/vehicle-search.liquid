@@ -1,0 +1,127 @@
+{% comment %}
+  Vehicle Fitment Search - Year/Make/Model selector
+{% endcomment %}
+
+<div class="vehicle-search" data-vehicle-search>
+  <div class="vehicle-search__container">
+    <h2 class="vehicle-search__heading">{{ section.settings.heading | default: "Find Parts for Your Vehicle" }}</h2>
+    <p class="vehicle-search__subheading">{{ section.settings.subheading | default: "Select your vehicle to find compatible parts" }}</p>
+
+    <form class="vehicle-search__form" data-vehicle-form>
+      <div class="vehicle-search__selectors">
+        <!-- Year Selector -->
+        <div class="vehicle-search__field">
+          <label for="vehicle-year" class="vehicle-search__label">Year</label>
+          <select
+            id="vehicle-year"
+            name="year"
+            class="vehicle-search__select"
+            data-vehicle-year
+            required
+          >
+            <option value="">Select Year</option>
+          </select>
+        </div>
+
+        <!-- Make Selector -->
+        <div class="vehicle-search__field">
+          <label for="vehicle-make" class="vehicle-search__label">Make</label>
+          <select
+            id="vehicle-make"
+            name="make"
+            class="vehicle-search__select"
+            data-vehicle-make
+            required
+            disabled
+          >
+            <option value="">Select Make</option>
+          </select>
+        </div>
+
+        <!-- Model Selector -->
+        <div class="vehicle-search__field">
+          <label for="vehicle-model" class="vehicle-search__label">Model</label>
+          <select
+            id="vehicle-model"
+            name="model"
+            class="vehicle-search__select"
+            data-vehicle-model
+            required
+            disabled
+          >
+            <option value="">Select Model</option>
+          </select>
+        </div>
+
+        <!-- Optional: Engine/Trim -->
+        <div class="vehicle-search__field vehicle-search__field--optional">
+          <label for="vehicle-engine" class="vehicle-search__label">Engine (Optional)</label>
+          <select
+            id="vehicle-engine"
+            name="engine"
+            class="vehicle-search__select"
+            data-vehicle-engine
+            disabled
+          >
+            <option value="">Any Engine</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="vehicle-search__actions">
+        <button
+          type="submit"
+          class="vehicle-search__button button button--primary"
+          data-search-button
+          disabled
+        >
+          Find Compatible Parts
+        </button>
+        <button
+          type="button"
+          class="vehicle-search__reset button button--secondary"
+          data-reset-button
+          style="display: none;"
+        >
+          Clear Selection
+        </button>
+      </div>
+
+      <div class="vehicle-search__saved" data-saved-vehicle style="display: none;">
+        <p class="vehicle-search__saved-text">
+          Shopping for: <strong data-saved-vehicle-text></strong>
+          <button type="button" class="vehicle-search__change-link" data-change-vehicle>Change</button>
+        </p>
+      </div>
+    </form>
+
+    <div class="vehicle-search__loading" data-loading style="display: none;">
+      <div class="spinner"></div>
+      <p>Loading vehicle data...</p>
+    </div>
+
+    <div class="vehicle-search__error" data-error style="display: none;">
+      <p class="error-message" data-error-message></p>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Vehicle Search",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Find Parts for Your Vehicle"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Select your vehicle to find compatible parts"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,583 @@
+{% comment %}
+  Vehicle-Specific Collection Template
+  Elegant layout for vehicle-specific parts collections
+{% endcomment %}
+
+<div class="vehicle-collection-page">
+  {% comment %} Hero Section with Vehicle Info {% endcomment %}
+  <div class="vehicle-hero">
+    <div class="page-width">
+      <div class="vehicle-hero__content">
+        <h1 class="vehicle-hero__title">{{ collection.title }}</h1>
+        {% if collection.description != blank %}
+          <div class="vehicle-hero__description">
+            {{ collection.description }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="collection-layout page-width">
+    {% comment %} Filters Sidebar {% endcomment %}
+    <aside class="collection-sidebar">
+      <div class="filter-section">
+        <h3 class="filter-section__title">Filter by Category</h3>
+        <div class="filter-links">
+          <a href="{{ collection.url }}" class="filter-link filter-link--active">All Parts</a>
+          <a href="{{ collection.url }}?tag=Engine" class="filter-link">Engine</a>
+          <a href="{{ collection.url }}?tag=Suspension" class="filter-link">Suspension</a>
+          <a href="{{ collection.url }}?tag=Brakes" class="filter-link">Brakes</a>
+          <a href="{{ collection.url }}?tag=Exhaust" class="filter-link">Exhaust</a>
+          <a href="{{ collection.url }}?tag=Interior" class="filter-link">Interior</a>
+          <a href="{{ collection.url }}?tag=Exterior" class="filter-link">Exterior</a>
+          <a href="{{ collection.url }}?tag=Drivetrain" class="filter-link">Drivetrain</a>
+          <a href="{{ collection.url }}?tag=Electrical" class="filter-link">Electrical</a>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <h3 class="filter-section__title">Filter by Brand</h3>
+        <div class="filter-links">
+          <a href="{{ collection.url }}" class="filter-link">All Brands</a>
+          <a href="{{ collection.url }}?tag=NISMO" class="filter-link">NISMO</a>
+          <a href="{{ collection.url }}?tag=Nissan" class="filter-link">Nissan OEM</a>
+          <a href="{{ collection.url }}?tag=Honda" class="filter-link">Honda OEM</a>
+          <a href="{{ collection.url }}?tag=Toda Racing" class="filter-link">Toda Racing</a>
+          <a href="{{ collection.url }}?tag=HKS" class="filter-link">HKS</a>
+          <a href="{{ collection.url }}?tag=Greddy" class="filter-link">Greddy</a>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <h3 class="filter-section__title">Price Range</h3>
+        <div class="filter-links">
+          <a href="{{ collection.url }}" class="filter-link">All Prices</a>
+          <a href="{{ collection.url }}?price_max=50" class="filter-link">Under $50</a>
+          <a href="{{ collection.url }}?price_min=50&price_max=100" class="filter-link">$50 - $100</a>
+          <a href="{{ collection.url }}?price_min=100&price_max=250" class="filter-link">$100 - $250</a>
+          <a href="{{ collection.url }}?price_min=250" class="filter-link">$250+</a>
+        </div>
+      </div>
+    </aside>
+
+    {% comment %} Products Grid {% endcomment %}
+    <div class="collection-content">
+      <div class="results-header">
+        <div class="results-count">
+          {{ collection.products_count }} {{ collection.products_count | pluralize: 'part', 'parts' }}
+        </div>
+
+        <div class="collection-sort">
+          <label for="sort-by">Sort:</label>
+          <select id="sort-by" class="collection-sort__select" onchange="sortProducts(this.value)">
+            <option value="manual">Featured</option>
+            <option value="best-selling">Best Selling</option>
+            <option value="title-ascending">A-Z</option>
+            <option value="title-descending">Z-A</option>
+            <option value="price-ascending">Price: Low to High</option>
+            <option value="price-descending">Price: High to Low</option>
+            <option value="created-descending">Newest</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="product-grid">
+        {% for product in collection.products %}
+          <article class="product-card">
+            <a href="{{ product.url }}" class="product-card__link">
+              {% if product.featured_image %}
+                <div class="product-card__image-wrapper">
+                  <img
+                    src="{{ product.featured_image | image_url: width: 400 }}"
+                    alt="{{ product.featured_image.alt | escape }}"
+                    class="product-card__image"
+                    loading="lazy"
+                  >
+                </div>
+              {% else %}
+                <div class="product-card__image-wrapper">
+                  <div class="product-card__image product-card__image--placeholder"></div>
+                </div>
+              {% endif %}
+
+              <div class="product-card__info">
+                {% if product.metafields.product_specs.brand %}
+                  <div class="product-card__brand">{{ product.metafields.product_specs.brand }}</div>
+                {% endif %}
+
+                <h3 class="product-card__title">{{ product.title }}</h3>
+
+                {% if product.metafields.product_specs.part_number %}
+                  <div class="product-card__part-number">Part #: {{ product.metafields.product_specs.part_number }}</div>
+                {% endif %}
+
+                <div class="product-card__price">
+                  {{ product.price | money }}
+                  {% if product.compare_at_price > product.price %}
+                    <span class="price-save">SALE</span>
+                  {% endif %}
+                </div>
+
+                {% if product.metafields.shipping.free_shipping_eligible == true %}
+                  <div class="product-card__badge product-card__badge--shipping">
+                    Free Shipping
+                  </div>
+                {% endif %}
+              </div>
+            </a>
+          </article>
+        {% else %}
+          <div class="collection-empty">
+            <h2>No products found</h2>
+            <p>Check back soon for new parts for this vehicle.</p>
+          </div>
+        {% endfor %}
+      </div>
+
+      {% comment %} Pagination {% endcomment %}
+      {% if paginate.pages > 1 %}
+        <div class="pagination">
+          {% if paginate.previous %}
+            <a href="{{ paginate.previous.url }}" class="pagination__link">
+              ← Previous
+            </a>
+          {% endif %}
+
+          {% for part in paginate.parts %}
+            {% if part.is_link %}
+              <a href="{{ part.url }}" class="pagination__link">{{ part.title }}</a>
+            {% else %}
+              {% if part.title == paginate.current_page %}
+                <span class="pagination__link pagination__link--current">{{ part.title }}</span>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+
+          {% if paginate.next %}
+            <a href="{{ paginate.next.url }}" class="pagination__link">
+              Next →
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<script>
+  function sortProducts(sortValue) {
+    const url = new URL(window.location);
+    url.searchParams.set('sort_by', sortValue);
+    window.location.href = url.toString();
+  }
+</script>
+
+<style>
+  .vehicle-collection-page {
+    background: #0a0a0a;
+  }
+
+  /* Vehicle Hero Section */
+  .vehicle-hero {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    padding: 8rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .vehicle-hero::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent);
+  }
+
+  .vehicle-hero__content {
+    max-width: 800px;
+    text-align: center;
+    margin: 0 auto;
+  }
+
+  .vehicle-hero__title {
+    font-size: 5rem;
+    font-weight: 800;
+    margin: 0 0 2rem 0;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: linear-gradient(135deg, #ffffff 0%, var(--color-primary, #D4AF37) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 40px rgba(212, 175, 55, 0.6);
+  }
+
+  .vehicle-hero__description {
+    font-size: 1.8rem;
+    color: #999;
+    line-height: 1.6;
+  }
+
+  /* Collection Layout */
+  .collection-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 4rem;
+    padding: 6rem 2rem;
+  }
+
+  /* Sidebar Filters */
+  .collection-sidebar {
+    position: sticky;
+    top: 12rem;
+    height: fit-content;
+  }
+
+  .filter-section {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .filter-section__title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #e8e8e8;
+    margin: 0 0 1.5rem 0;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #2a2a2a;
+  }
+
+  .filter-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .filter-link {
+    display: block;
+    padding: 0.8rem 1rem;
+    color: #999;
+    text-decoration: none;
+    font-size: 1.4rem;
+    transition: all 0.3s ease;
+    border-left: 2px solid transparent;
+  }
+
+  .filter-link:hover {
+    color: var(--color-primary, #D4AF37);
+    background: rgba(212, 175, 55, 0.05);
+    border-left-color: var(--color-primary, #D4AF37);
+  }
+
+  .filter-link--active {
+    color: var(--color-primary, #D4AF37);
+    background: rgba(212, 175, 55, 0.1);
+    border-left-color: var(--color-primary, #D4AF37);
+    font-weight: 600;
+  }
+
+  /* Results Header */
+  .results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #2a2a2a;
+  }
+
+  .results-count {
+    font-size: 1.6rem;
+    color: #e8e8e8;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .collection-sort {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .collection-sort label {
+    font-size: 1.4rem;
+    color: #999;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .collection-sort__select {
+    padding: 1rem 1.5rem;
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    color: #e8e8e8;
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .collection-sort__select:hover,
+  .collection-sort__select:focus {
+    border-color: var(--color-primary, #D4AF37);
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+    outline: none;
+  }
+
+  /* Product Grid */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 3rem;
+  }
+
+  .product-card {
+    position: relative;
+  }
+
+  .product-card__link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+    background: linear-gradient(180deg, #1a1a1a, #151515);
+    border: 1px solid #2a2a2a;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .product-card__link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--color-primary, #D4AF37), transparent);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .product-card__link:hover::before {
+    opacity: 1;
+  }
+
+  .product-card__link:hover {
+    border-color: var(--color-primary, #D4AF37);
+    box-shadow: 0 0 40px rgba(212, 175, 55, 0.25), 0 20px 40px rgba(0, 0, 0, 0.4);
+    transform: translateY(-8px);
+  }
+
+  .product-card__image-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: #0a0a0a;
+  }
+
+  .product-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .product-card__link:hover .product-card__image {
+    transform: scale(1.08);
+  }
+
+  .product-card__image--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+    color: #444;
+    font-size: 1.4rem;
+  }
+
+  .product-card__image--placeholder::after {
+    content: 'No Image';
+  }
+
+  .product-card__info {
+    padding: 2rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .product-card__brand {
+    font-size: 1.2rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+  }
+
+  .product-card__title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #e8e8e8;
+    margin: 0 0 1rem 0;
+    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .product-card__part-number {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 1rem;
+  }
+
+  .product-card__price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-primary, #D4AF37);
+    margin-top: auto;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+  }
+
+  .price-save {
+    background: var(--color-accent, #ff3366);
+    color: white;
+    padding: 0.4rem 0.8rem;
+    font-size: 1.2rem;
+    margin-left: 0.8rem;
+    box-shadow: 0 0 10px rgba(255, 51, 102, 0.4);
+    font-weight: 700;
+  }
+
+  .product-card__badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-top: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .product-card__badge--shipping {
+    background: rgba(212, 175, 55, 0.1);
+    color: var(--color-primary, #D4AF37);
+    border: 1px solid var(--color-primary, #D4AF37);
+  }
+
+  /* Pagination */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 6rem;
+  }
+
+  .pagination__link {
+    padding: 1.2rem 2rem;
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    color: #e8e8e8;
+    text-decoration: none;
+    font-size: 1.4rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .pagination__link:hover {
+    background: var(--color-primary, #D4AF37);
+    color: #0a0a0a;
+    border-color: var(--color-primary, #D4AF37);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+  }
+
+  .pagination__link--current {
+    background: var(--color-primary, #D4AF37);
+    color: #0a0a0a;
+    border-color: var(--color-primary, #D4AF37);
+  }
+
+  /* Empty State */
+  .collection-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 8rem 2rem;
+  }
+
+  .collection-empty h2 {
+    font-size: 3rem;
+    color: #e8e8e8;
+    margin-bottom: 1rem;
+  }
+
+  .collection-empty p {
+    font-size: 1.8rem;
+    color: #666;
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .collection-layout {
+      grid-template-columns: 240px 1fr;
+      gap: 3rem;
+    }
+
+    .vehicle-hero__title {
+      font-size: 4rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .vehicle-hero {
+      padding: 6rem 1.5rem;
+    }
+
+    .vehicle-hero__title {
+      font-size: 3.2rem;
+    }
+
+    .vehicle-hero__description {
+      font-size: 1.6rem;
+    }
+
+    .collection-layout {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+      padding: 4rem 1.5rem;
+    }
+
+    .collection-sidebar {
+      position: static;
+    }
+
+    .filter-section {
+      padding: 2rem;
+    }
+
+    .results-header {
+      flex-direction: column;
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+
+    .product-grid {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 2rem;
+    }
+
+    .product-card__info {
+      padding: 1.5rem;
+    }
+  }
+</style>
