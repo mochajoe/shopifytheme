@@ -38,6 +38,25 @@
         {% endif %}
       </div>
     </div>
+
+    {% comment %} Carousel Navigation Arrows {% endcomment %}
+    <button class="hero-banner__arrow hero-banner__arrow--prev" aria-label="Previous slide">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+    </button>
+    <button class="hero-banner__arrow hero-banner__arrow--next" aria-label="Next slide">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </button>
+
+    {% comment %} Carousel Indicators - Formula S Style {% endcomment %}
+    <div class="hero-banner__indicators">
+      <button class="hero-banner__indicator active" aria-label="Slide 1"></button>
+      <button class="hero-banner__indicator" aria-label="Slide 2"></button>
+      <button class="hero-banner__indicator" aria-label="Slide 3"></button>
+    </div>
   </div>
 </section>
 
@@ -224,29 +243,87 @@
     letter-spacing: 0.02em;
   }
 
-  /* Formula S Style Button */
+  /* Formula S Style Button - Rounded White */
   .hero-banner__cta {
     display: inline-block;
-    padding: 1.6rem 4rem;
+    padding: 1.4rem 4rem;
     background: #ffffff;
     color: #000000;
     text-decoration: none;
     text-transform: uppercase;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     font-weight: 700;
-    letter-spacing: 0.15em;
-    border-radius: 0;
-    border: 2px solid #ffffff;
+    letter-spacing: 0.1em;
+    border-radius: 50px;
+    border: none;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   }
 
   .hero-banner__cta:hover {
-    background: transparent;
+    background: #FF6B35;
     color: #ffffff;
-    border-color: #ffffff;
-    box-shadow: 0 6px 25px rgba(255, 255, 255, 0.2);
+    box-shadow: 0 6px 30px rgba(255, 107, 53, 0.4);
     transform: translateY(-2px);
+  }
+
+  /* Carousel Navigation Arrows */
+  .hero-banner__arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: #ffffff;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 4;
+    backdrop-filter: blur(5px);
+  }
+
+  .hero-banner__arrow:hover {
+    background: rgba(255, 107, 53, 0.9);
+  }
+
+  .hero-banner__arrow--prev {
+    left: 2rem;
+  }
+
+  .hero-banner__arrow--next {
+    right: 2rem;
+  }
+
+  /* Carousel Indicators - Formula S Style Dots */
+  .hero-banner__indicators {
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 1rem;
+    z-index: 4;
+  }
+
+  .hero-banner__indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+  }
+
+  .hero-banner__indicator:hover,
+  .hero-banner__indicator.active {
+    background: #ffffff;
+    transform: scale(1.2);
   }
 
   /* Responsive Design */
@@ -310,6 +387,14 @@
     .hero-banner__cta {
       padding: 1.2rem 2.5rem;
       font-size: 1.2rem;
+    }
+
+    .hero-banner__arrow {
+      display: none;
+    }
+
+    .hero-banner__indicators {
+      bottom: 2rem;
     }
   }
 </style>
