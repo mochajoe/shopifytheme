@@ -5,35 +5,6 @@
 
 <header class="site-header {% if section.settings.sticky_header %}header-sticky{% endif %} {% if section.settings.transparent_header %}header-transparent{% endif %}" data-section-id="{{ section.id }}">
 
-  {% comment %} Announcement Bar {% endcomment %}
-  {% if section.settings.show_announcement %}
-    <div class="header-announcement">
-      <div class="announcement-wrapper">
-        <button class="announcement-arrow announcement-arrow--prev" aria-label="Previous announcement">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="15 18 9 12 15 6"></polyline>
-          </svg>
-        </button>
-
-        <div class="announcement-content">
-          {% if section.settings.announcement_icon %}
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="announcement-icon">
-              <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-              <path d="M2 17l10 5 10-5M2 12l10 5 10-5"></path>
-            </svg>
-          {% endif %}
-          <span>{{ section.settings.announcement_text }}</span>
-        </div>
-
-        <button class="announcement-arrow announcement-arrow--next" aria-label="Next announcement">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="9 18 15 12 9 6"></polyline>
-          </svg>
-        </button>
-      </div>
-    </div>
-  {% endif %}
-
   {% comment %} Main Header {% endcomment %}
   <div class="header-main">
     <div class="page-width">
@@ -320,28 +291,6 @@
     },
     {
       "type": "header",
-      "content": "Announcement Bar"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_announcement",
-      "label": "Show Announcement Bar",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "announcement_icon",
-      "label": "Show Announcement Icon",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "announcement_text",
-      "label": "Announcement Text",
-      "default": "Free shipping on orders over $50"
-    },
-    {
-      "type": "header",
       "content": "Header Features"
     },
     {
@@ -400,53 +349,6 @@
 
 <style>
   /* Whisper Style Header - Formula S Colors */
-
-  /* Announcement Bar */
-  .header-announcement {
-    background: #000000;
-    color: #ffffff;
-    font-size: 1.3rem;
-    padding: 1rem 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .announcement-wrapper {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 2rem;
-  }
-
-  .announcement-arrow {
-    background: transparent;
-    border: none;
-    color: rgba(255, 255, 255, 0.6);
-    cursor: pointer;
-    padding: 0.5rem;
-    display: flex;
-    align-items: center;
-    transition: color 0.2s;
-  }
-
-  .announcement-arrow:hover {
-    color: #ffffff;
-  }
-
-  .announcement-content {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    font-size: 1.3rem;
-    letter-spacing: 0.02em;
-  }
-
-  .announcement-icon {
-    color: #FF6B35;
-    flex-shrink: 0;
-  }
 
   /* Main Header */
   .site-header {
@@ -986,10 +888,6 @@
 
     .header-actions {
       gap: 1rem;
-    }
-
-    .announcement-content {
-      font-size: 1.2rem;
     }
   }
 </style>
