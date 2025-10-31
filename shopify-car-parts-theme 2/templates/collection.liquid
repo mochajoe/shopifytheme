@@ -55,9 +55,7 @@
             data-product-card
             data-product-id="{{ product.id }}"
             data-product-price="{{ product.price | divided_by: 100.0 }}"
-            {% if product.metafields.product_specs.brand %}
-              data-product-brand="{{ product.metafields.product_specs.brand }}"
-            {% endif %}
+            data-product-brand="{{ product.vendor }}"
             {% if product.metafields.product_info.installation_difficulty %}
               data-install-difficulty="{{ product.metafields.product_info.installation_difficulty }}"
             {% endif %}
@@ -78,8 +76,8 @@
               {% endif %}
 
               <div class="product-card__info">
-                {% if product.metafields.product_specs.brand %}
-                  <div class="product-card__brand">{{ product.metafields.product_specs.brand }}</div>
+                {% if product.vendor %}
+                  <div class="product-card__brand">{{ product.vendor }}</div>
                 {% endif %}
 
                 <h3 class="product-card__title">{{ product.title }}</h3>
