@@ -88,6 +88,8 @@ class CollectionFilters {
     let filterType = 'brands';
     if (filterGroup.hasAttribute('data-filter-category')) filterType = 'categories';
     if (filterGroup.hasAttribute('data-filter-installation')) filterType = 'installation';
+    // Vendor filter uses the same 'brands' filter type
+    if (checkbox.hasAttribute('data-vendor-filter')) filterType = 'brands';
 
     if (checkbox.checked) {
       if (!this.activeFilters[filterType].includes(value)) {

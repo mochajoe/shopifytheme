@@ -42,7 +42,7 @@
       </div>
     </div>
 
-    {% comment %} Brand Filter {% endcomment %}
+    {% comment %} Brand Filter - Dynamic Vendors {% endcomment %}
     <div class="filter-group">
       <button class="filter-group__header" data-filter-toggle>
         <span>Brand</span>
@@ -52,18 +52,41 @@
       </button>
       <div class="filter-group__content">
         <div class="filter-options" data-filter-brand>
-          <label class="filter-option">
-            <input type="checkbox" value="OEM" data-filter-checkbox>
-            <span>OEM</span>
-          </label>
-          <label class="filter-option">
-            <input type="checkbox" value="Aftermarket" data-filter-checkbox>
-            <span>Aftermarket</span>
-          </label>
-          <label class="filter-option">
-            <input type="checkbox" value="Performance" data-filter-checkbox>
-            <span>Performance</span>
-          </label>
+          {% comment %} Get unique vendors from collection {% endcomment %}
+          {% if collection %}
+            {% assign vendors = '' %}
+            {% for product in collection.products %}
+              {% unless vendors contains product.vendor %}
+                {% assign vendors = vendors | append: product.vendor | append: ',' %}
+                <label class="filter-option">
+                  <input type="checkbox" value="{{ product.vendor | escape }}" data-filter-checkbox data-vendor-filter>
+                  <span>{{ product.vendor }}</span>
+                </label>
+              {% endunless %}
+            {% endfor %}
+          {% else %}
+            {% comment %} Fallback for non-collection pages {% endcomment %}
+            <label class="filter-option">
+              <input type="checkbox" value="Brembo" data-filter-checkbox data-vendor-filter>
+              <span>Brembo</span>
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" value="StopTech" data-filter-checkbox data-vendor-filter>
+              <span>StopTech</span>
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" value="KW Suspension" data-filter-checkbox data-vendor-filter>
+              <span>KW Suspension</span>
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" value="Eibach" data-filter-checkbox data-vendor-filter>
+              <span>Eibach</span>
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" value="Akrapovic" data-filter-checkbox data-vendor-filter>
+              <span>Akrapovic</span>
+            </label>
+          {% endif %}
         </div>
       </div>
     </div>
