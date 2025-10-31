@@ -56,6 +56,9 @@
             data-product-id="{{ product.id }}"
             data-product-price="{{ product.price | divided_by: 100.0 }}"
             data-product-brand="{{ product.vendor }}"
+            {% if product.metafields.vehicle.car_model %}
+              data-product-model="{{ product.metafields.vehicle.car_model }}"
+            {% endif %}
             {% if product.metafields.product_info.installation_difficulty %}
               data-install-difficulty="{{ product.metafields.product_info.installation_difficulty }}"
             {% endif %}

@@ -11,6 +11,7 @@ class CollectionFilters {
     this.activeFilters = {
       price: { min: null, max: null },
       brands: [],
+      models: [],
       categories: [],
       installation: [],
       availability: [],
@@ -81,15 +82,18 @@ class CollectionFilters {
   handleCheckboxChange(e) {
     const checkbox = e.target;
     const value = checkbox.value;
-    const filterGroup = checkbox.closest('[data-filter-brand], [data-filter-category], [data-filter-installation]');
+    const filterGroup = checkbox.closest('[data-filter-brand], [data-filter-model], [data-filter-category], [data-filter-installation]');
 
     if (!filterGroup) return;
 
     let filterType = 'brands';
+    if (filterGroup.hasAttribute('data-filter-model')) filterType = 'models';
     if (filterGroup.hasAttribute('data-filter-category')) filterType = 'categories';
     if (filterGroup.hasAttribute('data-filter-installation')) filterType = 'installation';
     // Vendor filter uses the same 'brands' filter type
     if (checkbox.hasAttribute('data-vendor-filter')) filterType = 'brands';
+    // Model filter
+    if (checkbox.hasAttribute('data-model-filter')) filterType = 'models';
 
     if (checkbox.checked) {
       if (!this.activeFilters[filterType].includes(value)) {
@@ -144,6 +148,14 @@ class CollectionFilters {
     if (this.activeFilters.brands.length > 0) {
       const productBrand = card.dataset.productBrand;
       if (!productBrand || !this.activeFilters.brands.includes(productBrand)) {
+        return false;
+      }
+    }
+
+    // Model filter
+    if (this.activeFilters.models.length > 0) {
+      const productModel = card.dataset.productModel;
+      if (!productModel || !this.activeFilters.models.includes(productModel)) {
         return false;
       }
     }
@@ -221,6 +233,12 @@ class CollectionFilters {
       hasActiveFilters = true;
     });
 
+    // Model badges
+    this.activeFilters.models.forEach(model => {
+      this.createFilterBadge(`Model: ${model}`, () => this.removeFilter('models', model));
+      hasActiveFilters = true;
+    });
+
     // Category badges
     this.activeFilters.categories.forEach(category => {
       this.createFilterBadge(category, () => this.removeFilter('categories', category));
@@ -285,6 +303,7 @@ class CollectionFilters {
     this.activeFilters = {
       price: { min: null, max: null },
       brands: [],
+      models: [],
       categories: [],
       installation: [],
       availability: [],
