@@ -198,6 +198,12 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  color: #e8e8e8;
+}
+
+.compatibility-info--universal span {
+  color: #e8e8e8;
+  font-weight: 600;
 }
 
 .compatibility-info__title {
@@ -296,6 +302,7 @@
   margin: 3rem 0;
   padding: 2rem 0;
   border-top: 1px solid #2a2a2a;
+  color: #d1d5db;
 }
 
 .product-description h2 {
@@ -304,6 +311,11 @@
   margin: 0 0 1.5rem 0;
   text-transform: uppercase;
   color: #e8e8e8;
+}
+
+.product-description p {
+  color: #d1d5db;
+  line-height: 1.8;
 }
 
 /* Specifications Table - Dark */
@@ -383,6 +395,22 @@
   margin-bottom: 0.5rem;
   font-weight: 700;
   color: var(--color-primary, #FF6B35);
+}
+
+.installation-info__tools {
+  margin-top: 1.5rem;
+  color: #d1d5db;
+}
+
+.installation-info__tools strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--color-primary, #FF6B35);
+}
+
+.installation-info__tools p {
+  color: #d1d5db;
+  line-height: 1.8;
 }
 
 .badge {
