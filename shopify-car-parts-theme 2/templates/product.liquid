@@ -145,55 +145,6 @@
         </div>
       {% endif %}
 
-      {% comment %} Product Specifications {% endcomment %}
-      <div class="product-specifications">
-        <h2>Specifications</h2>
-        <table class="specs-table">
-          {% if product.metafields.product_specs.brand %}
-            <tr>
-              <th>Brand</th>
-              <td>{{ product.metafields.product_specs.brand }}</td>
-            </tr>
-          {% endif %}
-          {% if product.metafields.product_specs.part_number %}
-            <tr>
-              <th>Part Number</th>
-              <td>{{ product.metafields.product_specs.part_number }}</td>
-            </tr>
-          {% endif %}
-          {% if product.metafields.product_specs.oem_number %}
-            <tr>
-              <th>OEM Number</th>
-              <td>{{ product.metafields.product_specs.oem_number }}</td>
-            </tr>
-          {% endif %}
-          {% if product.metafields.product_specs.material %}
-            <tr>
-              <th>Material</th>
-              <td>{{ product.metafields.product_specs.material }}</td>
-            </tr>
-          {% endif %}
-          {% if product.metafields.product_specs.weight %}
-            <tr>
-              <th>Weight</th>
-              <td>{{ product.metafields.product_specs.weight }}</td>
-            </tr>
-          {% endif %}
-          {% if product.metafields.product_specs.dimensions %}
-            <tr>
-              <th>Dimensions</th>
-              <td>{{ product.metafields.product_specs.dimensions }}</td>
-            </tr>
-          {% endif %}
-          {% if product.metafields.product_specs.warranty %}
-            <tr>
-              <th>Warranty</th>
-              <td>{{ product.metafields.product_specs.warranty }}</td>
-            </tr>
-          {% endif %}
-        </table>
-      </div>
-
       {% comment %} Installation Info {% endcomment %}
       {% if product.metafields.product_info.installation_difficulty %}
         <div class="installation-info">
