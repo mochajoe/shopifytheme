@@ -165,6 +165,18 @@
 </script>
 
 <style>
+  .collection-header__title {
+    color: #e8e8e8;
+  }
+
+  .collection-header__description {
+    color: #888;
+  }
+
+  .results-count {
+    color: #e8e8e8;
+  }
+
   .product-card__link {
     text-decoration: none;
     color: inherit;
@@ -189,18 +201,21 @@
   }
 
   .product-card__badge--shipping {
-    background: #d1fae5;
-    color: #065f46;
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+    border: 1px solid #10b981;
   }
 
   .product-card__badge--universal {
-    background: #dbeafe;
-    color: #1e40af;
+    background: rgba(59, 130, 246, 0.15);
+    color: #3b82f6;
+    border: 1px solid #3b82f6;
   }
 
   .product-card__badge--sold-out {
-    background: #fee2e2;
-    color: #991b1b;
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    border: 1px solid #ef4444;
   }
 
   .product-card__compare-price {
@@ -214,8 +229,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #f3f4f6;
-    color: #9ca3af;
+    background: #1a1a1a;
+    color: #666;
   }
 
   .collection-sort {
@@ -227,14 +242,17 @@
   .collection-sort label {
     font-size: 1.5rem;
     font-weight: 600;
+    color: #e8e8e8;
   }
 
   .collection-sort__select {
     padding: 0.8rem 1.2rem;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #2a2a2a;
     border-radius: 4px;
     font-size: 1.5rem;
     cursor: pointer;
+    background: #1a1a1a;
+    color: #e8e8e8;
   }
 
   .pagination {
@@ -247,10 +265,10 @@
 
   .pagination__link {
     padding: 0.8rem 1.4rem;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #2a2a2a;
     border-radius: 4px;
     text-decoration: none;
-    color: var(--color-text);
+    color: #e8e8e8;
     transition: all 0.2s;
   }
 
