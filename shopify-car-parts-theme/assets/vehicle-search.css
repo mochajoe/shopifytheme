@@ -137,14 +137,21 @@
 }
 
 .button--secondary {
-  background-color: transparent;
-  color: var(--color-text);
-  border: 2px solid #e2e8f0;
+  background-color: #ffffff;
+  color: #000000;
+  border: none;
+  border-radius: 50px;
+  padding: 1.4rem 3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
 }
 
 .button--secondary:hover {
-  background-color: #f7fafc;
-  border-color: #cbd5e0;
+  background-color: #FF6B35;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4);
 }
 
 .vehicle-search__saved {

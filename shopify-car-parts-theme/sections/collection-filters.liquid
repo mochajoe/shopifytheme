@@ -42,7 +42,7 @@
       </div>
     </div>
 
-    {% comment %} Brand Filter - Dynamic Vendors {% endcomment %}
+    {% comment %} Brand Filter - Product Brands {% endcomment %}
     <div class="filter-group">
       <button class="filter-group__header" data-filter-toggle>
         <span>Brand</span>
@@ -52,7 +52,6 @@
       </button>
       <div class="filter-group__content">
         <div class="filter-options" data-filter-brand>
-          {% comment %} Get unique vendors from collection {% endcomment %}
           {% if collection %}
             {% assign vendors = '' %}
             {% for product in collection.products %}
@@ -65,22 +64,21 @@
               {% endunless %}
             {% endfor %}
           {% else %}
-            {% comment %} Fallback for non-collection pages {% endcomment %}
             <label class="filter-option">
               <input type="checkbox" value="Brembo" data-filter-checkbox data-vendor-filter>
               <span>Brembo</span>
-            </label>
-            <label class="filter-option">
-              <input type="checkbox" value="StopTech" data-filter-checkbox data-vendor-filter>
-              <span>StopTech</span>
             </label>
             <label class="filter-option">
               <input type="checkbox" value="KW Suspension" data-filter-checkbox data-vendor-filter>
               <span>KW Suspension</span>
             </label>
             <label class="filter-option">
-              <input type="checkbox" value="Eibach" data-filter-checkbox data-vendor-filter>
-              <span>Eibach</span>
+              <input type="checkbox" value="Bilstein" data-filter-checkbox data-vendor-filter>
+              <span>Bilstein</span>
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" value="Öhlins" data-filter-checkbox data-vendor-filter>
+              <span>Öhlins</span>
             </label>
             <label class="filter-option">
               <input type="checkbox" value="Akrapovic" data-filter-checkbox data-vendor-filter>
@@ -91,57 +89,52 @@
       </div>
     </div>
 
-    {% comment %} Car Model Filter {% endcomment %}
+    {% comment %} Car Manufacturer Filter - Dropdown {% endcomment %}
     <div class="filter-group">
       <button class="filter-group__header" data-filter-toggle>
-        <span>Car Model</span>
+        <span>CAR MANUFACTURER</span>
         <svg class="filter-group__icon" width="12" height="8" viewBox="0 0 12 8">
           <path d="M1.41 0L6 4.59 10.59 0 12 1.41l-6 6-6-6z" fill="currentColor"/>
         </svg>
       </button>
       <div class="filter-group__content">
-        <div class="filter-options" data-filter-model>
-          <label class="filter-option">
-            <input type="checkbox" value="GT-R" data-filter-checkbox data-model-filter>
-            <span>Nissan GT-R</span>
-          </label>
-          <label class="filter-option">
-            <input type="checkbox" value="911" data-filter-checkbox data-model-filter>
-            <span>Porsche 911</span>
-          </label>
-          <label class="filter-option">
-            <input type="checkbox" value="M3" data-filter-checkbox data-model-filter>
-            <span>BMW M3</span>
-          </label>
-          <label class="filter-option">
-            <input type="checkbox" value="M4" data-filter-checkbox data-model-filter>
-            <span>BMW M4</span>
-          </label>
-          <label class="filter-option">
-            <input type="checkbox" value="Corvette" data-filter-checkbox data-model-filter>
-            <span>Chevrolet Corvette</span>
-          </label>
-          <label class="filter-option">
-            <input type="checkbox" value="Mustang" data-filter-checkbox data-model-filter>
-            <span>Ford Mustang</span>
-          </label>
-          <label class="filter-option">
-            <input type="checkbox" value="Civic" data-filter-checkbox data-model-filter>
-            <span>Honda Civic</span>
-          </label>
-          <label class="filter-option">
-            <input type="checkbox" value="WRX" data-filter-checkbox data-model-filter>
-            <span>Subaru WRX/STI</span>
-          </label>
-          <label class="filter-option">
-            <input type="checkbox" value="Supra" data-filter-checkbox data-model-filter>
-            <span>Toyota Supra</span>
-          </label>
-          <label class="filter-option">
-            <input type="checkbox" value="370Z" data-filter-checkbox data-model-filter>
-            <span>Nissan 370Z/350Z</span>
-          </label>
-        </div>
+        <select class="filter-select" data-car-manufacturer-select data-filter-dropdown>
+          <option value="">Select Car Manufacturer</option>
+          <option value="Acura">Acura</option>
+          <option value="BMW">BMW</option>
+          <option value="Chevrolet">Chevrolet</option>
+          <option value="Ford">Ford</option>
+          <option value="Honda">Honda</option>
+          <option value="Nissan">Nissan</option>
+          <option value="Porsche">Porsche</option>
+          <option value="Subaru">Subaru</option>
+          <option value="Toyota">Toyota</option>
+        </select>
+      </div>
+    </div>
+
+    {% comment %} Car Model Filter - Dropdown {% endcomment %}
+    <div class="filter-group">
+      <button class="filter-group__header" data-filter-toggle>
+        <span>CAR MODEL</span>
+        <svg class="filter-group__icon" width="12" height="8" viewBox="0 0 12 8">
+          <path d="M1.41 0L6 4.59 10.59 0 12 1.41l-6 6-6-6z" fill="currentColor"/>
+        </svg>
+      </button>
+      <div class="filter-group__content">
+        <select class="filter-select" data-car-model-select data-filter-dropdown>
+          <option value="">Select Car Model</option>
+          <option value="911">911</option>
+          <option value="Civic">Civic</option>
+          <option value="Corvette">Corvette</option>
+          <option value="GT-R">GT-R</option>
+          <option value="M3">M3</option>
+          <option value="M4">M4</option>
+          <option value="Mustang">Mustang</option>
+          <option value="Supra">Supra</option>
+          <option value="WRX">WRX/STI</option>
+          <option value="370Z">370Z/350Z</option>
+        </select>
       </div>
     </div>
 

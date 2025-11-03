@@ -11,7 +11,8 @@ class CollectionFilters {
     this.activeFilters = {
       price: { min: null, max: null },
       brands: [],
-      models: [],
+      carManufacturers: [],
+      carModels: [],
       categories: [],
       installation: [],
       availability: [],
@@ -47,11 +48,38 @@ class CollectionFilters {
       checkbox.addEventListener('change', (e) => this.handleCheckboxChange(e));
     });
 
+    // Dropdown filters
+    const dropdowns = this.filtersContainer.querySelectorAll('[data-filter-dropdown]');
+    dropdowns.forEach(dropdown => {
+      dropdown.addEventListener('change', (e) => this.handleDropdownChange(e));
+    });
+
     // Clear all filters
     const clearBtn = this.filtersContainer.querySelector('[data-clear-filters]');
     if (clearBtn) {
       clearBtn.addEventListener('click', () => this.clearAllFilters());
     }
+  }
+
+  handleDropdownChange(e) {
+    const dropdown = e.target;
+    const value = dropdown.value;
+
+    // Determine filter type
+    let filterType = 'carManufacturers';
+    if (dropdown.hasAttribute('data-car-model-select')) filterType = 'carModels';
+    if (dropdown.hasAttribute('data-car-manufacturer-select')) filterType = 'carManufacturers';
+
+    // Clear the filter type first
+    this.activeFilters[filterType] = [];
+
+    // Add new value if not empty
+    if (value) {
+      this.activeFilters[filterType].push(value);
+    }
+
+    this.applyFilters();
+    this.updateActiveFiltersDisplay();
   }
 
   toggleFilterGroup(button) {
@@ -144,7 +172,7 @@ class CollectionFilters {
       }
     }
 
-    // Brand filter
+    // Brand filter (product brands like Brembo, KW, etc.)
     if (this.activeFilters.brands.length > 0) {
       const productBrand = card.dataset.productBrand;
       if (!productBrand || !this.activeFilters.brands.includes(productBrand)) {
@@ -152,10 +180,18 @@ class CollectionFilters {
       }
     }
 
-    // Model filter
-    if (this.activeFilters.models.length > 0) {
-      const productModel = card.dataset.productModel;
-      if (!productModel || !this.activeFilters.models.includes(productModel)) {
+    // Car Manufacturer filter (car makes like BMW, Honda, etc.)
+    if (this.activeFilters.carManufacturers.length > 0) {
+      const carManufacturer = card.dataset.carManufacturer;
+      if (!carManufacturer || !this.activeFilters.carManufacturers.includes(carManufacturer)) {
+        return false;
+      }
+    }
+
+    // Car Model filter (car models like M3, Civic, etc.)
+    if (this.activeFilters.carModels.length > 0) {
+      const carModel = card.dataset.carModel;
+      if (!carModel || !this.activeFilters.carModels.includes(carModel)) {
         return false;
       }
     }
@@ -227,15 +263,21 @@ class CollectionFilters {
       hasActiveFilters = true;
     }
 
-    // Brand badges
+    // Brand badges (product brands)
     this.activeFilters.brands.forEach(brand => {
       this.createFilterBadge(brand, () => this.removeFilter('brands', brand));
       hasActiveFilters = true;
     });
 
-    // Model badges
-    this.activeFilters.models.forEach(model => {
-      this.createFilterBadge(`Model: ${model}`, () => this.removeFilter('models', model));
+    // Car Manufacturer badges
+    this.activeFilters.carManufacturers.forEach(manufacturer => {
+      this.createFilterBadge(`Car: ${manufacturer}`, () => this.removeFilter('carManufacturers', manufacturer));
+      hasActiveFilters = true;
+    });
+
+    // Car Model badges
+    this.activeFilters.carModels.forEach(model => {
+      this.createFilterBadge(`Model: ${model}`, () => this.removeFilter('carModels', model));
       hasActiveFilters = true;
     });
 
@@ -294,6 +336,20 @@ class CollectionFilters {
       checkbox.checked = false;
     }
 
+    // Reset the corresponding dropdown
+    if (type === 'carManufacturers') {
+      const manufacturerDropdown = this.filtersContainer.querySelector('[data-car-manufacturer-select]');
+      if (manufacturerDropdown && manufacturerDropdown.value === value) {
+        manufacturerDropdown.value = '';
+      }
+    }
+    if (type === 'carModels') {
+      const modelDropdown = this.filtersContainer.querySelector('[data-car-model-select]');
+      if (modelDropdown && modelDropdown.value === value) {
+        modelDropdown.value = '';
+      }
+    }
+
     this.applyFilters();
     this.updateActiveFiltersDisplay();
   }
@@ -303,7 +359,8 @@ class CollectionFilters {
     this.activeFilters = {
       price: { min: null, max: null },
       brands: [],
-      models: [],
+      carManufacturers: [],
+      carModels: [],
       categories: [],
       installation: [],
       availability: [],
@@ -313,6 +370,11 @@ class CollectionFilters {
     // Clear all checkboxes
     this.filtersContainer.querySelectorAll('[data-filter-checkbox]').forEach(cb => {
       cb.checked = false;
+    });
+
+    // Clear all dropdowns
+    this.filtersContainer.querySelectorAll('[data-filter-dropdown]').forEach(dropdown => {
+      dropdown.value = '';
     });
 
     // Clear price inputs
